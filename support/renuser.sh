@@ -32,3 +32,7 @@ echo "update user_preferences set user_login='"$2"' where user_login='"$1"';" | 
 echo "update user_photo_of_the_week set user_login='"$2"' where user_login='"$1"';" | sqlite3 v2p.db
 
 echo "update themes_user_votes set user_login='"$2"' where user_login='"$1"';" | sqlite3 v2p.db
+
+echo "update user_rating set user_login='"$2"' where user_login='"$1"';" | sqlite3 v2p.db
+
+echo "update rating set user_login='"$2"' where user_login='"$1"';" | sqlite3 v2p.db
