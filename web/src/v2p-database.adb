@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2012                          --
+--                         Copyright (C) 2006-2013                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -422,10 +422,8 @@ package body V2P.Database is
             Time          := Time & DB.String_Vectors.Element (Line, 4);
             User          := User
               & DB.String_Vectors.Element (Line, 5);
-            Anonymous     := Anonymous
-              & DB.String_Vectors.Element (Line, 6);
-            Comment       := Comment
-              & DB.String_Vectors.Element (Line, 7);
+            Anonymous     := Anonymous & DB.String_Vectors.Element (Line, 6);
+            Comment       := Comment & DB.String_Vectors.Element (Line, 7);
 
             Filename := Filename & File;
 
