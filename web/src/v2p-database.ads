@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2012                          --
+--                         Copyright (C) 2006-2013                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -75,11 +75,13 @@ package V2P.Database is
    end record;
 
    type User_Data is record
-      UID         : Unbounded_String;
-      Password    : Unbounded_String;
-      Email       : Unbounded_String;
-      Admin       : Boolean;
-      Preferences : User_Settings;
+      UID           : Unbounded_String;
+      Password      : Unbounded_String;
+      Email         : Unbounded_String;
+      Admin         : Boolean;
+      Disabled      : Boolean;
+      Disabled_Date : Unbounded_String;
+      Preferences   : User_Settings;
    end record;
 
    type Select_Mode is (Everything, Navigation_Only);
@@ -195,6 +197,11 @@ package V2P.Database is
    function Get_User_Data_From_Email (Email : in String) return User_Data;
    --  Returns the user's data for the given e-mail. Returns No_User_Data
    --  if the Email cannot be found into the database.
+
+   procedure Set_Disable_User
+     (Login    : in String;
+      Disabled : in Boolean);
+   --  Set disable user preference
 
    procedure Set_Last_Logged (Uid : in String);
    --  Set last logged status in the database
@@ -315,7 +322,8 @@ private
                       (Null_Unbounded_String,
                        Null_Unbounded_String,
                        Null_Unbounded_String,
-                       False,
+                       False, False,
+                       Null_Unbounded_String,
                        Default_User_Settings);
 
    Empty_Id     : constant Id := 0;

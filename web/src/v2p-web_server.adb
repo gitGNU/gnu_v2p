@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2012                          --
+--                         Copyright (C) 2006-2013                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -80,6 +80,7 @@ with V2P.Template_Defs.Block_Pref_Image_Size;
 with V2P.Template_Defs.Block_Pref_New_Avatar;
 with V2P.Template_Defs.Block_Pref_Private_Message;
 with V2P.Template_Defs.Block_Pref_Show_Comments;
+with V2P.Template_Defs.Block_Pref_User_Disabled;
 with V2P.Template_Defs.Block_Pref_User_Email;
 with V2P.Template_Defs.Block_Private_Message;
 with V2P.Template_Defs.Block_Theme_Admin;
@@ -144,6 +145,7 @@ with V2P.Template_Defs.R_Block_Metadata_Form_Enter;
 with V2P.Template_Defs.R_Block_Post_Form_Enter;
 with V2P.Template_Defs.R_Block_Pref_Private_Message;
 with V2P.Template_Defs.R_Block_Pref_Show_Comments;
+with V2P.Template_Defs.R_Block_Pref_Disable_User;
 with V2P.Template_Defs.R_Block_Rate;
 with V2P.Template_Defs.R_Block_Send_Private_Message;
 with V2P.Template_Defs.R_Block_Theme_Admin;
@@ -423,6 +425,15 @@ package body V2P.Web_Server is
                  (Template_Defs.Set_Global.ADMIN,
                   String'(Session.Get
                     (SID, Template_Defs.Set_Global.ADMIN))));
+         end if;
+
+         if Session.Exist (SID, Template_Defs.Set_Global.USER_DISABLED) then
+            Templates.Insert
+              (Translations,
+               Templates.Assoc
+                 (Template_Defs.Set_Global.USER_DISABLED,
+                  String'(Session.Get
+                    (SID, Template_Defs.Set_Global.USER_DISABLED))));
          end if;
       end if;
 
@@ -1148,6 +1159,13 @@ package body V2P.Web_Server is
         (Template_Defs.Block_Pref_Private_Message.Ajax.onclick_bppm_check,
          Template_Defs.R_Block_Pref_Private_Message.Template,
          Callbacks.Ajax.Onclick_Pref_Private_Message_Preference'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Pref_User_Disabled.Ajax.onclick_bpud_check,
+         Template_Defs.R_Block_Pref_Disable_User.Template,
+         Callbacks.Ajax.Onclick_Pref_Disable_User'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 

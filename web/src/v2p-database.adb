@@ -395,11 +395,12 @@ package body V2P.Database is
          & ", " & Timezone.Time ("date", TZ) & ", "
          & "user_login, anonymous_user, comment, "
          & "(SELECT filename FROM photo WHERE id=comment.photo_id), has_voted,"
-         & " JULIANDAY(date)"
+         & " JULIANDAY(date), DATE('now')>user.disabled_since"
          & Select_Is_New
-         & " FROM comment, post_comment"
+         & " FROM comment, post_comment, user"
          & " WHERE post_id=" & To_String (Tid)
-         & " AND post_comment.comment_id=comment.id");
+         & " AND post_comment.comment_id=comment.id"
+         & " AND user.login=user_login");
 
       while Iter.More loop
          Iter.Get_Line (Line);
@@ -420,8 +421,13 @@ package body V2P.Database is
               & DB.String_Vectors.Element (Line, 2);
             Date          := Date & DB.String_Vectors.Element (Line, 3);
             Time          := Time & DB.String_Vectors.Element (Line, 4);
-            User          := User
-              & DB.String_Vectors.Element (Line, 5);
+
+            if DB.String_Vectors.Element (Line, 11) = "0" then
+               User := User & DB.String_Vectors.Element (Line, 5);
+            else
+               User := User & Settings.Get_Deactivated_User_Name;
+            end if;
+
             Anonymous     := Anonymous & DB.String_Vectors.Element (Line, 6);
             Comment       := Comment & DB.String_Vectors.Element (Line, 7);
 
@@ -438,7 +444,7 @@ package body V2P.Database is
          Has_Voted := Has_Voted & DB.String_Vectors.Element (Line, 9);
 
          if Login /= "" then
-            Is_New := Is_New & (DB.String_Vectors.Element (Line, 11) /= "0");
+            Is_New := Is_New & (DB.String_Vectors.Element (Line, 12) /= "0");
          end if;
 
          --  Unthreaded view
@@ -1207,6 +1213,7 @@ package body V2P.Database is
       use type Templates.Tag;
       DBH   : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       SQL   : constant String := "SELECT login FROM user "
+                                   & " WHERE DATE('now')<disabled_since"
                                    & " ORDER BY created DESC "
                                    & " LIMIT " & Positive'Image (Limit);
       Iter  : DB.Iterator'Class := DB_Handle.Get_Iterator;
@@ -1384,7 +1391,7 @@ package body V2P.Database is
             & Utils.Image (Settings.Anonymity_Hours)
             & " hour') - JULIANDAY('NOW')) * 24, category.name, category.id, "
             & "(SELECT id FROM photo_of_the_week AS cdc "
-            & " WHERE cdc.post_id=post.id) "
+            & " WHERE cdc.post_id=post.id), DATE('now')>disabled_since "
             & "FROM post, user, user_post, photo, category "
             & "WHERE post.id=" & To_String (Tid)
             & " AND user.login=user_post.user_login"
@@ -1445,10 +1452,17 @@ package body V2P.Database is
                  (Page_Forum_Entry.THUMB_IMAGE_HEIGHT,
                   DB.String_Vectors.Element (Line, 10)));
 
-            Templates.Insert
-              (Set, Templates.Assoc
-                 (Page_Forum_Entry.OWNER,
-                  DB.String_Vectors.Element (Line, 11)));
+            if DB.String_Vectors.Element (Line, 17) /= "0" then
+               Templates.Insert
+                 (Set, Templates.Assoc
+                    (Page_Forum_Entry.OWNER,
+                     Settings.Get_Deactivated_User_Name));
+            else
+               Templates.Insert
+                 (Set, Templates.Assoc
+                    (Page_Forum_Entry.OWNER,
+                     DB.String_Vectors.Element (Line, 11)));
+            end if;
 
             Templates.Insert
               (Set, Templates.Assoc
@@ -1513,7 +1527,8 @@ package body V2P.Database is
             & "user.login, " & Timezone.Date_Time ("post.date_post", TZ) & ", "
             & "DATETIME(post.date_post, '+"
             & Utils.Image (Settings.Anonymity_Hours)
-            & " hour')<DATETIME('NOW'), category.name, category.id "
+            & " hour')<DATETIME('NOW'), category.name, category.id,"
+            & " DATE('now')>disabled_since "
             & "FROM post, user, user_post, category "
             & "WHERE post.id=" & To_String (Tid)
             & " AND user.login=user_post.user_login"
@@ -1540,10 +1555,17 @@ package body V2P.Database is
                  (Page_Forum_Entry.HIDDEN,
                   DB.String_Vectors.Element (Line, 3)));
 
-            Templates.Insert
-              (Set, Templates.Assoc
-                 (Page_Forum_Entry.OWNER,
-                  DB.String_Vectors.Element (Line, 4)));
+            if DB.String_Vectors.Element (Line, 9) /= "0" then
+               Templates.Insert
+                 (Set, Templates.Assoc
+                    (Page_Forum_Entry.OWNER,
+                     Settings.Get_Deactivated_User_Name));
+            else
+               Templates.Insert
+                 (Set, Templates.Assoc
+                    (Page_Forum_Entry.OWNER,
+                     DB.String_Vectors.Element (Line, 4)));
+            end if;
 
             Templates.Insert
               (Set, Templates.Assoc
@@ -1702,7 +1724,7 @@ package body V2P.Database is
       begin
          if not Count_Only or else User /= "" then
             --  Needed the user_post table for join
-            Append (From_Stmt, ", user_post");
+            Append (From_Stmt, ", user_post, user");
          end if;
 
          if Forum /= Forum_All then
@@ -1737,7 +1759,8 @@ package body V2P.Database is
                     & "visit_counter, post.hidden, user_post.user_login, "
                     & Timezone.Date_Time ("post.last_activity", TZ) & ", "
                     & "(SELECT id FROM photo_of_the_week "
-                    & "WHERE post.id = photo_of_the_week.post_id)";
+                    & "WHERE post.id = photo_of_the_week.post_id), "
+                    & "DATE('now')>disabled_since";
 
                   if Login /= "" then
                      --  Is_New? Check last activity against last user visit
@@ -1801,6 +1824,7 @@ package body V2P.Database is
             --  if count_only is true and user is not null then
             --  join in needed to restrict to the given user
             Append (Where_Stmt, " AND user_post.post_id=post.id");
+            Append (Where_Stmt, " AND user_post.user_login=user.login");
          end if;
 
          if Fid /= Empty_Id then
@@ -2091,8 +2115,13 @@ package body V2P.Database is
             Visit_Counter   := Visit_Counter
               & DB.String_Vectors.Element (Line, 8);
             Hidden          := Hidden    & DB.String_Vectors.Element (Line, 9);
-            Owner           := Owner
-              & DB.String_Vectors.Element (Line, 10);
+
+            if DB.String_Vectors.Element (Line, 13) /= "0" then
+               Owner := Owner & Settings.Get_Deactivated_User_Name;
+            else
+               Owner := Owner & DB.String_Vectors.Element (Line, 10);
+            end if;
+
             Date_Last_Com   := Date_Last_Com
               & DB.String_Vectors.Element (Line, 11);
             Is_CDC          := Is_CDC
@@ -2100,7 +2129,7 @@ package body V2P.Database is
 
             if Login /= ""  then
                Is_New := Is_New
-                 & (DB.String_Vectors.Element (Line, 13) /= "0");
+                 & (DB.String_Vectors.Element (Line, 14) /= "0");
             end if;
          end if;
 
@@ -2278,7 +2307,9 @@ package body V2P.Database is
 
       DBH.Handle.Prepare_Select
         (Iter,
-         "SELECT password, admin, email FROM user WHERE login=" & Q (Uid));
+         "SELECT password, admin, email, "
+         & "disabled_since<DATE('2300-01-01'), disabled_since"
+         & " FROM user WHERE login=" & Q (Uid));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -2287,16 +2318,20 @@ package body V2P.Database is
             Password : constant String := DB.String_Vectors.Element (Line, 1);
             Admin    : constant String := DB.String_Vectors.Element (Line, 2);
             Email    : constant String := DB.String_Vectors.Element (Line, 3);
+            Disabled : constant String := DB.String_Vectors.Element (Line, 4);
+            Date     : constant String := DB.String_Vectors.Element (Line, 5);
             Prefs    : User_Settings;
          begin
             Line.Clear;
             Preference.User (Uid, Prefs);
 
-            return User_Data'(UID         => +Uid,
-                              Password    => +Password,
-                              Admin       => Boolean'Value (Admin),
-                              Email       => +Email,
-                              Preferences => Prefs);
+            return User_Data'(UID           => +Uid,
+                              Password      => +Password,
+                              Admin         => Boolean'Value (Admin),
+                              Disabled      => Disabled /= "0",
+                              Email         => +Email,
+                              Preferences   => Prefs,
+                              Disabled_Date => +Date);
          end User;
 
       else
@@ -2323,7 +2358,9 @@ package body V2P.Database is
 
       DBH.Handle.Prepare_Select
         (Iter,
-         "SELECT login, password, admin FROM user WHERE email=" & Q (Email));
+         "SELECT login, password, admin, "
+         & "disabled_since<DATE('2300-01-01'), disabled_since"
+         & " FROM user WHERE email=" & Q (Email));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -2332,16 +2369,20 @@ package body V2P.Database is
             Login    : constant String := DB.String_Vectors.Element (Line, 1);
             Password : constant String := DB.String_Vectors.Element (Line, 2);
             Admin    : constant String := DB.String_Vectors.Element (Line, 3);
+            Disabled : constant String := DB.String_Vectors.Element (Line, 4);
+            Date     : constant String := DB.String_Vectors.Element (Line, 5);
             Prefs    : User_Settings;
          begin
             Line.Clear;
             Preference.User (Login, Prefs);
 
-            return User_Data'(UID         => +Login,
-                              Password    => +Password,
-                              Admin       => Boolean'Value (Admin),
-                              Email       => +Email,
-                              Preferences => Prefs);
+            return User_Data'(UID           => +Login,
+                              Password      => +Password,
+                              Admin         => Boolean'Value (Admin),
+                              Disabled      => Disabled /= "0",
+                              Email         => +Email,
+                              Disabled_Date => +Date,
+                              Preferences   => Prefs);
          end User;
 
       else
@@ -2578,7 +2619,8 @@ package body V2P.Database is
                             & ", " & Timezone.Date ("last_logged", TZ) & ", "
                             & "nb_com, nb_photo, nb_cdc "
                             & "FROM user, user_stats "
-                            & "WHERE user.login=user_stats.user_login "
+                            & "WHERE user.login=user_stats.user_login"
+                            & " AND DATE('now')<user.disabled_since "
                             & Sort_Order & " LIMIT"
                             & Positive'Image (Settings.Number_Users_Listed)
                             & " OFFSET" & Positive'Image (From - 1);
@@ -3064,6 +3106,36 @@ package body V2P.Database is
       Connect (DBH);
       DBH.Handle.Execute (SQL);
    end Set_Category;
+
+   ----------------------
+   -- Set_Disable_User --
+   ----------------------
+
+   procedure Set_Disable_User
+     (Login    : in String;
+      Disabled : in Boolean)
+   is
+      DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      SQL : Unbounded_String :=
+              To_Unbounded_String ("UPDATE user SET disabled_since=");
+   begin
+      Connect (DBH);
+
+      if Disabled then
+         --  Disabling will take 7 days, this ensure that the last posted
+         --  photos has been seen and commented.
+         Append
+           (SQL, "DATE('now', '+"
+            & Utils.Image (Settings.Get_Deactivated_Latency) & " day')");
+      else
+         --  Let's pust the disabled date far away in the futur
+         Append (SQL, "DATE('2300-01-01')");
+      end if;
+
+      Append (SQL, "WHERE login=" & Q (Login));
+
+      DBH.Handle.Execute (To_String (SQL));
+   end Set_Disable_User;
 
    --------------------------
    -- Set_Last_Forum_Visit --

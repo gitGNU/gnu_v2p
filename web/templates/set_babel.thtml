@@ -255,3 +255,5 @@
 @@SET@@ BABEL_COMMENT_VISIBILITY="Visibilité des commentaires"
 @@SET@@ BABEL_WEEK_VOTES="Votes pour le CdC n°"
 @@SET@@ BABEL_VOTES_PER_USER="Votes par utilisateur"
+@@SET@@ BABEL_DISABLE_USER="Activer/Désactiver mon compte"
+@@SET@@ BABEL_USER_DISABLED="Utilisateur désactivé"

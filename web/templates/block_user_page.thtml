@@ -13,6 +13,15 @@
 @_BABEL_USER_DOES_NOT_EXIST_@
 
 @@ELSE@@
+
+@@-- When a user is disabled, the only action in the user's page is to
+@@-- reactivate the account.
+
+@@IF@@ @_USER_DISABLED_@ and @_LOGIN_@ = @_USER_NAME_@
+@_LAZY_PREF_USER_DISABLED_@
+
+@@ELSE@@
+
 <div id="bup_top">
 <div id="bup_avatar">
 <iframe name="bup_avatar_target" id="bup_avatar_target" scrolling="no"
@@ -82,5 +91,6 @@
 @@END_IF@@
 
 <p class="up"><a href="#cvt_contents">@_BABEL_TOP_@</a></p>
+@@END_IF@@
 @@END_IF@@
 @@END_IF@@

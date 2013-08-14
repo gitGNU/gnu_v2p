@@ -6,7 +6,8 @@ create table "user" (
    "admin" boolean,
    "remember" boolean,
    "created" date default current_timestamp,
-   "last_logged" date default current_timestamp
+   "last_logged" date default current_timestamp,
+   "disabled_since" date default '2300-01-01'
 );
 
 create table "user_stats" (

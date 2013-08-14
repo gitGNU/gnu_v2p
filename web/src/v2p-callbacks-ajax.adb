@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2012                          --
+--                         Copyright (C) 2007-2013                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -69,6 +69,7 @@ with V2P.Template_Defs.Block_Pref_Forum_Sort;
 with V2P.Template_Defs.Block_Pref_Image_Size;
 with V2P.Template_Defs.Block_Pref_Private_Message;
 with V2P.Template_Defs.Block_Pref_Show_Comments;
+with V2P.Template_Defs.Block_Pref_User_Disabled;
 with V2P.Template_Defs.Block_Pref_User_Email;
 with V2P.Template_Defs.Block_Private_Message;
 with V2P.Template_Defs.Block_Theme_Photos;
@@ -85,6 +86,7 @@ with V2P.Template_Defs.R_Block_User_Email_Form_Enter;
 with V2P.Template_Defs.R_Block_Forum_Filter;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Post_Form_Enter;
+with V2P.Template_Defs.R_Block_Pref_Disable_User;
 with V2P.Template_Defs.R_Block_Pref_Private_Message;
 with V2P.Template_Defs.R_Block_Pref_Show_Comments;
 with V2P.Template_Defs.R_Block_Send_Private_Message;
@@ -702,6 +704,35 @@ package body V2P.Callbacks.Ajax is
    begin
       Templates.Insert (Translations, Database.Toggle_Hidden_Status (TID));
    end Onclick_Hidden_Status_Toggle;
+
+   -------------------------------
+   -- Onclick_Pref_Disable_User --
+   -------------------------------
+
+   procedure Onclick_Pref_Disable_User
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      package HTTP renames Template_Defs.Block_Pref_User_Disabled.HTTP;
+
+      SID    : constant Session.Id := Status.Session (Request);
+      Login  : constant String :=
+                 Context.Get_Value (Template_Defs.Set_Global.LOGIN);
+      P      : constant Parameters.List := Status.Parameters (Request);
+      Status : constant Boolean := Parameters.Get (P, HTTP.bpud_check) = "on";
+   begin
+      Database.Set_Disable_User (Login, Status);
+
+      --  Update session
+
+      Session.Set (SID, Template_Defs.Set_Global.USER_DISABLED, Status);
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.R_Block_Pref_Disable_User.SELECTED, Status));
+   end Onclick_Pref_Disable_User;
 
    ---------------------------------------------
    -- Onclick_Pref_Private_Message_Preference --

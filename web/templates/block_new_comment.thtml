@@ -1,6 +1,6 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
-@@IF@@ @_LOGIN_@ /= "" or @_OPTION_ANONYMOUS_COMMENT_@
+@@IF@@ (@_LOGIN_@ /= "" or @_OPTION_ANONYMOUS_COMMENT_@) and not @_USER_DISABLED_@
 @@SET@@ SET_FORM_POST_COMMENT_PHOTO = /bnc_add_photo
 @@--
 @@--
