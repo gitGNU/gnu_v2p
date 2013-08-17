@@ -11,14 +11,15 @@
 
 @@IF@@ @_USER_NOT_FOUND_@
 @_BABEL_USER_DOES_NOT_EXIST_@
+
 @@ELSE@@
 <div id="bup_top">
 <div id="bup_avatar">
 <iframe name="bup_avatar_target" id="bup_avatar_target" scrolling="no"
-	src="user_avatar?LOGIN=@_USER_NAME_@">
+        src="user_avatar?LOGIN=@_USER_NAME_@">
 @@-- LAZY_USER_AVATAR is there to properly generate reference to this web
 @@-- block. It has no effect for browser supporting iframes.
-	@_LAZY_USER_AVATAR_@
+       @_LAZY_USER_AVATAR_@
 </iframe>
 </div>
 
