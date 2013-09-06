@@ -36,7 +36,7 @@
       <label for="new_entry_name_input">@_BABEL_POST_NAME_@</label>
       <input name="NAME" id="pfnpe_new_entry_name_input" type="entry" value=""/>
     </p>
-@@IF@@ @_OPEN_THEME_@
+@@IF@@ @_OPEN_THEME_@ AND @_NB_THEME_USER_POST_@ < 1
     <p id="pfnpe_for_theme">
       <label for="for_theme_check">@_BABEL_FOR_THEME_@</label>
       <input name="@_SET_THEME_@" id="pfnpe_for_theme_check"

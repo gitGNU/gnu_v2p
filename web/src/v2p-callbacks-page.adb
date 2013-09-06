@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2012                          --
+--                         Copyright (C) 2007-2013                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -689,6 +689,11 @@ package body V2P.Callbacks.Page is
          Templates.Assoc
            (Template_Defs.Page_Forum_New_Photo_Entry.OPEN_THEME,
             Database.Themes.Current_Stage = Database.Themes.Open));
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Page_Forum_New_Photo_Entry.NB_THEME_USER_POST,
+            Database.Themes.Get_Nb_User_Post (Login)));
       Templates.Insert
         (Translations,
          Templates.Assoc

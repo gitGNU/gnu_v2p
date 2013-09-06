@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                            Copyright (C) 2012                            --
+--                         Copyright (C) 2012-2013                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -70,5 +70,9 @@ package V2P.Database.Themes is
 
    procedure Next_Stage;
    --  Move current theme to next stage, does nothing if this is no stage open
+
+   function Get_Nb_User_Post (Login : in String) return Natural;
+   --  Returns the number of post in the current running theme for the given
+   --  user.
 
 end V2P.Database.Themes;

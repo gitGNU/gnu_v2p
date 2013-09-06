@@ -338,6 +338,40 @@ package body V2P.Database.Themes is
       return Set;
    end Get_Current_Status;
 
+   ----------------------
+   -- Get_Nb_User_Post --
+   ----------------------
+
+   function Get_Nb_User_Post (Login : in String) return Natural is
+      use type Templates.Tag;
+
+      DBH   : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      SQL   : constant String :=
+                "SELECT COUNT(*) "
+                & "FROM themes_photos, user_post, post "
+                & "WHERE user_post.user_login=" & Q (Login)
+                & " AND user_post.post_id = post.id"
+                & " AND themes_photos.photo_id=post.photo_id"
+                & " AND themes_photos.theme_id=" & I (Current_Theme);
+      Iter  : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line  : DB.String_Vectors.Vector;
+      Count : Natural := 0;
+   begin
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select (Iter, SQL);
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+         Count := Natural'Value (DB.String_Vectors.Element (Line, 1));
+         Line.Clear;
+      end if;
+
+      Iter.End_Select;
+
+      return Count;
+   end Get_Nb_User_Post;
+
    -------------------------
    -- Get_Selected_Photos --
    -------------------------
