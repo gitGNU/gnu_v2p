@@ -134,4 +134,6 @@ package V2P.Defaults is
 
    Deactivated_User_Name       : constant String := "désactivé";
 
+   Deactivated_Latency         : constant Positive := 7;
+
 end V2P.Defaults;

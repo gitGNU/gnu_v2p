@@ -187,4 +187,8 @@ package V2P.Settings is
    function Get_Deactivated_User_Name return String;
    --  Returns the name used for deactivated users
 
+   function Get_Deactivated_Latency return Positive;
+   --  Returns the number of days for the disabled status to be taken into
+   --  account.
+
 end V2P.Settings;

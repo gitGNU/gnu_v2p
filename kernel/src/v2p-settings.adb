@@ -48,7 +48,7 @@ package body V2P.Settings is
       Number_CdC_Listed, RSS_Latest_Comments, RSS_Latest_Posts, Log_Level,
       Avatars_Path, Avatar_Maximum_Size, Avatars_Source_Prefix,
       Max_Vote_Per_User, CdC_Score_Threshold, Max_Theme_Vote_Per_User,
-      Deactivated_User_Name);
+      Deactivated_User_Name, Deactivated_Latency);
 
    package Conf is new Morzhol.Iniparser (Parameter_Name => Attributes);
 
@@ -189,6 +189,15 @@ package body V2P.Settings is
    begin
       return Conf.Get_Value (DB_Name);
    end Get_DB_Name;
+
+   -----------------------------
+   -- Get_Deactivated_Latency --
+   -----------------------------
+
+   function Get_Deactivated_Latency return Positive is
+   begin
+      return Conf.Get_Value (Deactivated_Latency);
+   end Get_Deactivated_Latency;
 
    -------------------------------
    -- Get_Deactivated_User_Name --
@@ -592,6 +601,7 @@ begin --  V2P.Settings : Set default values
    Conf.Set_Value (RSS_Latest_Posts, Defaults.RSS_Latest_Posts);
    Conf.Set_Value (CdC_Score_Threshold, Defaults.CdC_Score_Threshold);
    Conf.Set_Value (Deactivated_User_Name, Defaults.Deactivated_User_Name);
+   Conf.Set_Value (Deactivated_Latency, Defaults.Deactivated_Latency);
 
    --  Now read the config file if any
 
