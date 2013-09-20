@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2012                          --
+--                         Copyright (C) 2006-2013                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -131,5 +131,9 @@ package V2P.Defaults is
 
    Log_Level                   : constant Morzhol.Logs.Log_Level :=
                                    Morzhol.Logs.Warnings;
+
+   Deactivated_User_Name       : constant String := "désactivé";
+
+   Deactivated_Latency         : constant Positive := 7;
 
 end V2P.Defaults;

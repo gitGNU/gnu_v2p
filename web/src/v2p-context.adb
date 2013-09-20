@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2012                          --
+--                         Copyright (C) 2007-2013                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -53,6 +53,8 @@ package body V2P.Context is
          Database.Forum_Sort'Image (User_Data.Preferences.Sort));
 
       Session.Set (SID, Template_Defs.Set_Global.ADMIN, User_Data.Admin);
+      Session.Set
+        (SID, Template_Defs.Set_Global.USER_DISABLED, User_Data.Disabled);
    end Set_User_Preferences;
 
    ------------
@@ -198,6 +200,16 @@ package body V2P.Context is
               (Boolean'(Session.Get (SID, Template_Defs.Set_Global.ADMIN))));
       else
          Context.Remove (Template_Defs.Set_Global.ADMIN);
+      end if;
+
+      if Session.Exist (SID, Template_Defs.Set_Global.USER_DISABLED) then
+         Context.Set_Value
+           (Template_Defs.Set_Global.USER_DISABLED,
+            Boolean'Image
+              (Boolean'(Session.Get
+               (SID, Template_Defs.Set_Global.USER_DISABLED))));
+      else
+         Context.Remove (Template_Defs.Set_Global.USER_DISABLED);
       end if;
    end Update;
 

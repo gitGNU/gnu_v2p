@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2009-2010                          --
+--                         Copyright (C) 2009-2013                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -120,11 +120,13 @@ package body V2P.Database.Registration is
          Iter.Get_Line (Line);
 
          return User_Data'
-           (UID         => +Uid,
-            Password    => +DB.String_Vectors.Element (Line, 1),
-            Admin       => False,
-            Email       => +DB.String_Vectors.Element (Line, 2),
-            Preferences => Default_User_Settings);
+           (UID           => +Uid,
+            Password      => +DB.String_Vectors.Element (Line, 1),
+            Admin         => False,
+            Disabled      => False,
+            Disabled_Date => +"",
+            Email         => +DB.String_Vectors.Element (Line, 2),
+            Preferences   => Default_User_Settings);
       else
          return No_User_Data;
       end if;

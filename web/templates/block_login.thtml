@@ -27,6 +27,7 @@
 @@ELSE@@
 <div id="bl_logged_box">
   <ul>
+@@IF@@ not @_USER_DISABLED_@
     <li><a href="@_FORUM_NEW_PHOTO_URL_@">@_BABEL_FORUM_NEW_PHOTO_ENTRY_@</a></li>
     <li><a href="@_FORUM_POST_URL_@">@_BABEL_FORUM_NEW_ENTRY_@</a></li>
     @@IF@@ @_ADMIN_@
@@ -34,6 +35,7 @@
     @@END_IF@@
     <li><a href="/search">@_BABEL_SEARCH_@</a></li>
     <li><a href="/users">@_BABEL_PHOTOGRAPHERS_@</a></li>
+@@END_IF@@
     <li><a id="bl_logout_enter" href="#">@_BABEL_LOGOUT_@</a></li>
   </ul>
 </div>

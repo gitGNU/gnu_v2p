@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2012                          --
+--                         Copyright (C) 2006-2013                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -183,5 +183,12 @@ package V2P.Settings is
 
    function Log_Level return Morzhol.Logs.Log_Level;
    --  Returns the current log level
+
+   function Get_Deactivated_User_Name return String;
+   --  Returns the name used for deactivated users
+
+   function Get_Deactivated_Latency return Positive;
+   --  Returns the number of days for the disabled status to be taken into
+   --  account.
 
 end V2P.Settings;

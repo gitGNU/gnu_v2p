@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2012                          --
+--                         Copyright (C) 2007-2013                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -42,6 +42,7 @@ with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_Private_Message;
 with V2P.Template_Defs.Block_User_Avatar;
 with V2P.Template_Defs.Block_Pref_Show_Comments;
+with V2P.Template_Defs.Block_Pref_User_Disabled;
 with V2P.Template_Defs.Block_Pref_User_Email;
 with V2P.Template_Defs.Block_Theme_Header;
 with V2P.Template_Defs.Block_Theme_Rem_Vote;
@@ -771,6 +772,33 @@ package body V2P.Callbacks.Web_Block is
            (Template_Defs.Block_Pref_Show_Comments.PREF_SHOW_COMMENTS,
             Preferences.Start_Comment_Visible));
    end Pref_Show_Comments;
+
+   ------------------------
+   -- Pref_User_Disabled --
+   ------------------------
+
+   procedure Pref_User_Disabled
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+      Login     : constant String :=
+                    Context.Get_Value (Template_Defs.Set_Global.LOGIN);
+      User_Data : constant Database.User_Data :=
+                    Database.Get_User_Data (Uid => Login);
+   begin
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Block_Pref_User_Disabled.PREF_USER_DISABLED,
+            User_Data.Disabled));
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Block_Pref_User_Disabled.PREF_USER_DISABLED_DATE,
+            User_Data.Disabled_Date));
+   end Pref_User_Disabled;
 
    ---------------------
    -- Pref_User_Email --

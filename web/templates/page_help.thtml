@@ -15,7 +15,7 @@ communautaire autour de la critique photographique. Ce project est
 pour l'instant entièrement tourné vers la réalisation du site que vous
 voyez.</p>
 
-<p>Vision2Pixels c'est 23 000 lignes de code (2 développeurs)</p>
+<p>Vision2Pixels c'est 31 000 lignes de code (2 développeurs)</p>
 
 <h2>Une communauté de photographes</h2>
 
@@ -63,13 +63,8 @@ Un vote en deux passes permet d'élire la photographie gagnante.</p>
 
 <h2>A suivre...</h2>
 
-<p>Nous souhaitons apporter de nombreuses améliorations : </p>
-<ul class="squarelist">
-<li>La notification de nouveaux commentaires sur ses propres photographies ou
-sur les photographies "bookmarquées".</li>
-<li>La possibilité de tagger des photographies.</li>
-<li>Et de nombreuses autres fonctionnalités...</li>
-</ul>
+<p>En fonction des retours d'autres améliorations voient le jour
+régulièrement.</p>
 
 @@IF@@ @_V2P_ERROR_@ /= ""
   @_V2P_ERROR_@
