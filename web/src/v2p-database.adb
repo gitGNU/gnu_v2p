@@ -1457,11 +1457,17 @@ package body V2P.Database is
                  (Set, Templates.Assoc
                     (Page_Forum_Entry.OWNER,
                      Settings.Get_Deactivated_User_Name));
+               Templates.Insert
+                 (Set, Templates.Assoc
+                    (Page_Forum_Entry.OWNER_DEACTIVATED, True));
             else
                Templates.Insert
                  (Set, Templates.Assoc
                     (Page_Forum_Entry.OWNER,
                      DB.String_Vectors.Element (Line, 11)));
+               Templates.Insert
+                 (Set, Templates.Assoc
+                    (Page_Forum_Entry.OWNER_DEACTIVATED, False));
             end if;
 
             Templates.Insert
