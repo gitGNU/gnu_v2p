@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2009-2010                          --
+--                         Copyright (C) 2009-2013                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -95,8 +95,8 @@ package body V2P.Email is
         (Content,
          Name    => "message",
          Data    => Attachments.Value
-           (Data   => Templates.Parse (Template, Translations),
-            Encode => Attachments.Base64,
+           (Data         => Templates.Parse (Template, Translations),
+            Encode       => Attachments.Base64,
             Content_Type => MIME.Text_Plain & "; charset=UTF-8"));
 
       SMTP.Client.Send
