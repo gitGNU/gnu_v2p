@@ -173,7 +173,9 @@ package body V2P.Email is
    -- Send_Private_Message --
    --------------------------
 
-   procedure Send_Private_Message (From, Login, Email, Message : in String) is
+   procedure Send_Private_Message
+     (From, Sender_Email, Login, Email, Message : in String)
+   is
       Set : Templates.Translate_Set;
    begin
       Templates.Insert
@@ -188,6 +190,13 @@ package body V2P.Email is
          Template     => Template_Defs.Email_From_User.Template,
          Translations => Set,
          Subject      => "Message de Vision2Pixels");
+      Send
+        (Login        => From,
+         To           => Sender_Email,
+         Template     => Template_Defs.Email_From_User.Template,
+         Translations => Set,
+         Subject      =>
+           "Message de Vision2Pixels, copie envoyée à " & Login);
    end Send_Private_Message;
 
    ------------------------

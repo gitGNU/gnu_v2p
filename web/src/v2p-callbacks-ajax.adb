@@ -1527,11 +1527,14 @@ package body V2P.Callbacks.Ajax is
       Send_Mail : declare
          Login       : constant String :=
                          Context.Get_Value (Set_Global.LOGIN);
+         Sender_Data : constant Database.User_Data :=
+                         Database.Get_User_Data (Login);
          User_Data   : constant Database.User_Data :=
                          Database.Get_User_Data (User_Name);
       begin
          Email.Send_Private_Message
-           (Login, User_Name, To_String (User_Data.Email), Message);
+           (Login, To_String (Sender_Data.Email),
+            User_Name, To_String (User_Data.Email), Message);
 
          Templates.Insert
            (Translations,
