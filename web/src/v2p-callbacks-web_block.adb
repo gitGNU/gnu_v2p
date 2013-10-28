@@ -926,9 +926,13 @@ package body V2P.Callbacks.Web_Block is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set)
    is
-      pragma Unreferenced (Request, Context);
+      pragma Unreferenced (Request);
    begin
       Templates.Insert (Translations, Database.Themes.Get_Themes);
+
+      --  When we enter the theme page, we are not in any forum
+
+      Context.Remove (Template_Defs.Set_Global.FID);
    end Theme_List;
 
    ------------------
