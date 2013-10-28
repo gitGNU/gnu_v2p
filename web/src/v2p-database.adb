@@ -2608,6 +2608,8 @@ package body V2P.Database is
          Result : Unbounded_String := +"ORDER BY ";
       begin
          case Sort is
+            when Login =>
+               Append (Result, "login");
             when Date_Created =>
                Append (Result, "created");
             when Last_Connected =>
