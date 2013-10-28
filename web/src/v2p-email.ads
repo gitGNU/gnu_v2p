@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2009-2010                          --
+--                         Copyright (C) 2009-2013                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -32,7 +32,8 @@ package V2P.Email is
    procedure Send_Lost_Password (Login, Password, Email : in String);
    --  Send password to given address
 
-   procedure Send_Private_Message (From, Login, Email, Message : in String);
+   procedure Send_Private_Message
+     (From, Sender_Email, Login, Email, Message : in String);
    --  Send private message from From to (Login, Email)
 
    procedure Send_Change_Email (Login, Email, New_Email : in String);
