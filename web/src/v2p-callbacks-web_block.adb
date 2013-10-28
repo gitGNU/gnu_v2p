@@ -609,6 +609,27 @@ package body V2P.Callbacks.Web_Block is
            (Template_Defs.Block_New_Vote.RATING, Ratings));
    end New_Vote;
 
+   --------------------
+   -- Nominated_Data --
+   --------------------
+
+   procedure Nominated_Data
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+   begin
+      if Context.Exist (Template_Defs.Set_Global.TID) then
+         Templates.Insert
+           (Translations,
+            Database.Vote.Get_Nominated_Data
+              (V2P.Context.Counter.Get_Value
+                 (Context => Context.all,
+                  Name    => Template_Defs.Set_Global.TID)));
+      end if;
+   end Nominated_Data;
+
    -----------------------
    -- Photo_Of_The_Week --
    -----------------------
