@@ -190,6 +190,12 @@ package V2P.Callbacks.Ajax is
       Translations : in out          Templates.Translate_Set);
    --  Called when clicking on CdC's navigation previous page
 
+   procedure Onclick_Users_Sort_Login
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+   --  Called when sorting on login
+
    procedure Onclick_Users_Sort_Registered_On
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;

@@ -3,7 +3,21 @@
 
 <table class="user_list">
 <tr class="table_header">
-  <th></th>
+@@INLINE@@
+  <th><a id="cu_login" href="#" class="link
+@@IF@@ @_USER_SORT_@ = LOGIN
+   ;selected
+@@END_IF@@
+   ">@_BABEL_LOGIN_@
+@@IF@@ @_USER_SORT_@ = LOGIN
+@@IF@@ @_USER_ORDER_@ = DESC
+ ▼
+@@ELSE@@
+ ▲
+@@END_IF@@
+@@END_IF@@
+</a></th>
+@@END_INLINE@@
 @@--
 @@INLINE@@
   <th><a id="cu_registered_on" href="#" class="link
@@ -87,6 +101,7 @@
 @@--
 </tr>
 
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, cu_login)
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, cu_registered_on)
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, cu_last_connected)
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, cu_nb_photos)

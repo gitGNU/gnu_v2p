@@ -87,7 +87,7 @@ package V2P.Database is
    type Select_Mode is (Everything, Navigation_Only);
 
    type User_Sort is
-     (Date_Created, Last_Connected, Nb_Comments, Nb_Photos, Nb_CdC);
+     (Login, Date_Created, Last_Connected, Nb_Comments, Nb_Photos, Nb_CdC);
 
    No_User_Data          : constant User_Data;
    Default_User_Settings : constant User_Settings;

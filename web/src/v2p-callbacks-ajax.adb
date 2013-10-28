@@ -945,6 +945,18 @@ package body V2P.Callbacks.Ajax is
       User_Sort (Request, Context, Translations, Database.Last_Connected);
    end Onclick_Users_Sort_Last_Connected;
 
+   ------------------------------
+   -- Onclick_Users_Sort_Login --
+   ------------------------------
+
+   procedure Onclick_Users_Sort_Login
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set) is
+   begin
+      User_Sort (Request, Context, Translations, Database.Login);
+   end Onclick_Users_Sort_Login;
+
    -------------------------------
    -- Onclick_Users_Sort_Nb_CdC --
    -------------------------------

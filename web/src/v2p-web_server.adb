@@ -1235,6 +1235,13 @@ package body V2P.Web_Server is
          Context_Required => True);
 
       Services.Web_Block.Registry.Register
+        (Template_Defs.Chunk_Users.Ajax.onclick_cu_login,
+         Template_Defs.R_Block_Users.Template,
+         Callbacks.Ajax.Onclick_Users_Sort_Login'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
         (Template_Defs.Chunk_Users.Ajax.onclick_cu_registered_on,
          Template_Defs.R_Block_Users.Template,
          Callbacks.Ajax.Onclick_Users_Sort_Registered_On'Access,
