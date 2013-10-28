@@ -257,3 +257,4 @@
 @@SET@@ BABEL_VOTES_PER_USER="Votes par utilisateur"
 @@SET@@ BABEL_DISABLE_USER="Activer/Désactiver mon compte"
 @@SET@@ BABEL_USER_DISABLED="Utilisateur désactivé"
+@@SET@@ BABEL_NOMINATED_ON="Nomination(s) au CdC :"

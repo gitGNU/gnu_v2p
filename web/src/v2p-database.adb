@@ -1391,7 +1391,9 @@ package body V2P.Database is
             & Utils.Image (Settings.Anonymity_Hours)
             & " hour') - JULIANDAY('NOW')) * 24, category.name, category.id, "
             & "(SELECT id FROM photo_of_the_week AS cdc "
-            & " WHERE cdc.post_id=post.id), DATE('now')>disabled_since "
+            & " WHERE cdc.post_id=post.id), DATE('now')>disabled_since, "
+            & "(SELECT COUNT(*) FROM user_photo_of_the_week q "
+            & " WHERE q.post_id=post.id AND week_id!=0) "
             & "FROM post, user, user_post, photo, category "
             & "WHERE post.id=" & To_String (Tid)
             & " AND user.login=user_post.user_login"
@@ -1524,6 +1526,10 @@ package body V2P.Database is
                  (Page_Forum_Entry.CDC,
                   DB.String_Vectors.Element (Line, 16)));
 
+            Templates.Insert
+              (Set, Templates.Assoc
+                 (Page_Forum_Entry.NOMINATED,
+                  DB.String_Vectors.Element (Line, 18)));
             Line.Clear;
          end if;
 

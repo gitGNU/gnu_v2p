@@ -38,6 +38,7 @@ with V2P.Template_Defs.Block_Cdc_Data;
 with V2P.Template_Defs.Block_Cdc_Info;
 with V2P.Template_Defs.Block_Global_Rating;
 with V2P.Template_Defs.Block_New_Vote;
+with V2P.Template_Defs.Block_Nominated_Data;
 with V2P.Template_Defs.Block_Photo_Of_The_Week;
 with V2P.Template_Defs.Block_User_Voted_Photos_List;
 with V2P.Template_Defs.Chunk_List_Navlink;
@@ -430,6 +431,43 @@ package body V2P.Database.Vote is
            (Block_Global_Rating.GLOBAL_NB_VOTE, Nb_Vote));
       return Set;
    end Get_Global_Rating;
+
+   ------------------------
+   -- Get_Nominated_Data --
+   ------------------------
+
+   function Get_Nominated_Data (Tid : in Id) return Templates.Translate_Set is
+      use type Templates.Tag;
+
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Set  : Templates.Translate_Set;
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+      W_Id : Templates.Tag;
+      Date : Templates.Tag;
+   begin
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select
+        (Iter, "SELECT DISTINCT(week_id), elected_on"
+         & " FROM photo_of_the_week p, user_photo_of_the_week u"
+         & " WHERE u.post_id=" & To_String (Tid)
+         & " AND week_id!=0 AND week_id=p.id"
+         & " ORDER BY week_id DESC");
+
+      while Iter.More loop
+         Iter.Get_Line (Line);
+         W_Id := W_Id & DB.String_Vectors.Element (Line, 1);
+         Date := Date & DB.String_Vectors.Element (Line, 2);
+      end loop;
+
+      Templates.Insert
+        (Set, Templates.Assoc (Block_Nominated_Data.WEEK_ID, W_Id));
+      Templates.Insert
+        (Set, Templates.Assoc (Block_Nominated_Data.DATE, Date));
+
+      return Set;
+   end Get_Nominated_Data;
 
    ---------------------------
    -- Get_Photo_Of_The_Week --

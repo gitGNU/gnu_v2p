@@ -1,0 +1,10 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+<div id="bnom_data">
+@_BABEL_NOMINATED_ON_@
+@@INLINE@@
+@@TABLE@@
+<span id="bnom_info"><a href="/votes/@_WEEK_ID_@">@_DATE_@</a></span>
+@@END_TABLE@@
+@@END_INLINE@@
+</div>
