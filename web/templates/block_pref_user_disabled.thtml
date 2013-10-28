@@ -1,0 +1,21 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+@@-- HTTP_GET(bpud_check)
+@@--
+<div>
+  <p class="pref_header">
+    @_BABEL_DISABLE_USER_@
+  </p>
+@@INLINE@@
+<input id="bpud_check" type="checkbox"
+@@IF@@ @_PREF_USER_DISABLED_@
+  checked
+@@END_IF@@
+>@_BABEL_USER_DISABLED_@
+@@END_INLINE@@
+@@IF@@ @_PREF_USER_DISABLED_@
+(@_PREF_USER_DISABLED_DATE_@)
+@@END_IF@@
+</input>
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bpud_check, 4=>bpud_check)
+</div>
