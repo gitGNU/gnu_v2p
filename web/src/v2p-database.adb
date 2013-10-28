@@ -1522,7 +1522,7 @@ package body V2P.Database is
             Templates.Insert
               (Set, Templates.Assoc
                  (Page_Forum_Entry.CDC,
-                  DB.String_Vectors.Element (Line, 16) /= ""));
+                  DB.String_Vectors.Element (Line, 16)));
 
             Line.Clear;
          end if;

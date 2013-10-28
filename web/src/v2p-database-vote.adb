@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2010-2011                          --
+--                         Copyright (C) 2010-2013                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -283,6 +283,11 @@ package body V2P.Database.Vote is
             Week_Id : constant String :=
                         DB.String_Vectors.Element (Line, 1);
          begin
+            Templates.Insert
+              (Set,
+               Templates.Assoc
+                 (Template_Defs.Block_Cdc_Data.CDC_ID,
+                  DB.String_Vectors.Element (Line, 1)));
             Templates.Insert
               (Set,
                Templates.Assoc
