@@ -125,7 +125,7 @@ package body V2P.Database.Vote is
       --  Compute total number of CdC
 
       DBH.Handle.Prepare_Select
-        (Iter, "SELECT count(*) FROM photo_of_the_week WHERE post_id!=0");
+        (Iter, "SELECT COUNT(*) FROM photo_of_the_week WHERE post_id!=0");
 
       if Iter.More then
          Iter.Get_Line (Line);

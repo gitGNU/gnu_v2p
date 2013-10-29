@@ -293,7 +293,7 @@ package body V2P.Database.Themes is
       SQL  : constant String :=
                "SELECT title, "
                & Timezone.Date_Time ("created", TZ) & ", stage, "
-               & "(SELECT count(*) FROM themes_photos"
+               & "(SELECT COUNT(*) FROM themes_photos"
                & " WHERE themes.id=theme_id)"
                & " FROM themes WHERE stage != " & I (Stage'Pos (Closed));
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
