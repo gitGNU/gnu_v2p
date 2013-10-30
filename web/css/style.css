@@ -401,6 +401,16 @@ iframe#bup_avatar_target {
     padding-top: 10px;
     background: #303030;
 }
+.thumbs_theme {
+    float: left;
+    width:200px;
+    height:300px;
+    text-align: center;
+    margin: 15px 30px;
+    overflow:hidden;
+    display:inline;
+    padding-top: 10px;
+}
 .thumbs a {
     border: none;
 }

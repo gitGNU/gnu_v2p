@@ -13,7 +13,7 @@
 
 @@TABLE@@
   @@IF@@ @_THUMB_SOURCE_@ /= "" AND @_VOTE_@
-  <span class="thumbs">
+  <span class="thumbs_theme">
     <span class="imgcontainer">
       <span class="outernooverflow">
         <span class="nooverflowimage">
