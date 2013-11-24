@@ -1,3 +1,5 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
 @@IF@@ @_TID'LENGTH_@ > 0
 <table class="forum_text">
 <tr class="table_header">
