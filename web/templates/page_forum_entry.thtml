@@ -83,7 +83,15 @@
         @@END_IF@@
 
         @@IF@@ @_IMAGE_SOURCE_@ = ""
-        <span class="date">. @_BABEL_DATE_POST_@ @_FORMAT_DATE("%d-%m-%Y %H:%M:%S"):DATE_POST_@</span>
+        @@INLINE@@
+        <span class="date">. @_BABEL_DATE_POST_@
+        @@IF@@ @_LOGIN_@ = ""
+           @_FORMAT_DATE("%d-%m-%Y"):DATE_POST_@
+        @@ELSE@@
+           @_FORMAT_DATE("%d-%m-%Y %H:%M:%S"):DATE_POST_@
+        @@END_IF@@
+        @@END_INLINE@@
+        </span>
         @@END_IF@@
       </p>
 @@IF@@ @_IMAGE_COMMENT_@ /= ""
@@ -107,7 +115,15 @@
           </span>
         </p>
         <p id="pfe_info"> <span class="theader">@_BABEL_DATE_@ :</span>
-          <span>@_FORMAT_DATE("%d-%m-%Y %H:%M:%S"):DATE_POST_@</td></span>
+        @@INLINE@@
+        <span>
+        @@IF@@ @_LOGIN_@ = ""
+           @_FORMAT_DATE("%d-%m-%Y"):DATE_POST_@
+        @@ELSE@@
+           @_FORMAT_DATE("%d-%m-%Y %H:%M:%S"):DATE_POST_@
+        @@END_IF@@
+        </span>
+        @@END_INLINE@@
         </p>
         <div class="clear" name="exif">@_LAZY_EXIF_@</div>
         <div id="global_lazy_metadata" class="clear">@_LAZY_METADATA_@</div>

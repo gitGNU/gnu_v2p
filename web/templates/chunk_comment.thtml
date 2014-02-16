@@ -12,7 +12,11 @@
       <span class="newlv">!NEW</span>
       @@END_IF@@
       <abbr class="comment_date"
+      @@IF@@ @_LOGIN_@ = ""
+      title="@_FORMAT_DATE(%d-%m-%Y):DATE_@">@_FORMAT_DATE(%d-%m-%Y):DATE_@
+      @@ELSE@@
       title="@_DATE_ISO_8601_@">@_FORMAT_DATE(%d-%m-%Y):DATE_@&nbsp;@_TIME_@
+      @@END_IF@@
       </abbr>
     </a>
   </span>
