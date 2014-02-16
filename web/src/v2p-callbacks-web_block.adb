@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2013                          --
+--                         Copyright (C) 2007-2014                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -458,7 +458,8 @@ package body V2P.Callbacks.Web_Block is
    begin
       if Context.Exist (Template_Defs.Set_Global.TID) then
          if Context.Exist
-           (V2P.Template_Defs.Set_Global.ERROR_METADATA_NULL_METADATA) then
+           (V2P.Template_Defs.Set_Global.ERROR_METADATA_NULL_METADATA)
+         then
             Templates.Insert
               (Translations,
                Templates.Assoc
@@ -468,7 +469,8 @@ package body V2P.Callbacks.Web_Block is
               (V2P.Template_Defs.Set_Global.ERROR_METADATA_NULL_METADATA);
 
          elsif Context.Exist
-           (V2P.Template_Defs.Set_Global.ERROR_METADATA_UNKNOWN_PHOTO) then
+           (V2P.Template_Defs.Set_Global.ERROR_METADATA_UNKNOWN_PHOTO)
+         then
             Templates.Insert
               (Translations,
                Templates.Assoc
