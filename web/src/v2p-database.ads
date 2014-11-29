@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2013                          --
+--                         Copyright (C) 2006-2014                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -306,8 +306,8 @@ private
 
    Default_User_Settings : constant User_Settings :=
                              User_Settings'
-                               (Page_Size              => 10,
-                                Filter                 => Seven_Days,
+                               (Page_Size              => 20,
+                                Filter                 => One_Month,
                                 Sort                   => Last_Commented,
                                 Image_Size             => Max_Size,
                                 Accept_Private_Message => False,
